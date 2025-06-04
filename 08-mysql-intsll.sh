@@ -33,3 +33,15 @@ VALIDATE(){
 echo "script started executing at : $(date)" | tee -a $LOG_FILE
 
 CHECK_ROOT
+
+dnf install mysql-server -y
+VALIDATE $? "INSTALLING MYSQL SERVER"
+
+systemctl enable mysqld
+VALIDATE $? "ENABLING MYSQL SERVER"
+
+systemctl start mysqld
+VALIDATE $? "STARTED MYSQL SERVER"
+
+mysql_secure_installation --set-root-pass ExpenseApp@1
+VALIDATE $? "SETTING UP ROOT PASSWORD"
